@@ -20,13 +20,14 @@ namespace B_TEST
     /// </summary>
     public partial class MainWindow : Window
     {
-        KontaktRepository kontaktRepository;
-
         public MainWindow()
         {
             InitializeComponent();
-            kontaktRepository = new KontaktRepository();
-            PocetZoznam();
+            KontaktRepository kontaktRepository = new KontaktRepository();
+            var All = kontaktRepository.GetAll();
+            Pocet.Text = All.Count.ToString();
+            Vypis.ItemsSource = All;
+
         }
 
         private void txtMeno_Copy_TextChanged(object sender, TextChangedEventArgs e)
@@ -36,14 +37,10 @@ namespace B_TEST
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
-
+            KontaktRepository kontaktRepository = new KontaktRepository();
             kontaktRepository.Insert(new Kontakt { Meno = txtMeno.Text, Priezvisko = txtPriezvisko.Text });
+            Pocet.Text = kontaktRepository.GetAll().Count.ToString();
 
-            PocetZoznam();
-        }
-
-        private void PocetZoznam()
-        {
             var All = kontaktRepository.GetAll();
             Pocet.Text = All.Count.ToString();
             Vypis.ItemsSource = All;
